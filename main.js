@@ -42,65 +42,64 @@ const rollDisplay = document.querySelector('.roll');
 const presentBtn = document.querySelector('.p');
 const absentBtn = document.querySelector('.a');
 
-/// ...existing code...
-
-// Create and style textareas (hidden by default)
+// Create and style textareas and copy buttons (hidden by default)
 const presentContainer = document.createElement('div');
 presentContainer.style.display = 'none';
+presentContainer.style.position = 'relative';
 presentContainer.style.margin = '20px 0';
-presentContainer.style.textAlign = 'center';
-
-const presentLabel = document.createElement('div');
-presentLabel.innerText = 'Present Students';
-presentLabel.style.fontWeight = 'bold';
-presentLabel.style.marginBottom = '5px';
-presentLabel.style.fontSize = '18px';
 
 const presentTextarea = document.createElement('textarea');
 presentTextarea.readOnly = true;
-presentTextarea.style.width = '320px';
+presentTextarea.style.width = '300px';
 presentTextarea.style.height = '60px';
 presentTextarea.style.fontSize = '16px';
 presentTextarea.style.resize = 'none';
-presentTextarea.style.borderRadius = '8px';
-presentTextarea.style.border = '1px solid #4CAF50';
-presentTextarea.style.background = '#f6fff6';
-presentTextarea.style.padding = '8px';
 
-presentContainer.appendChild(presentLabel);
+const presentCopyBtn = document.createElement('button');
+presentCopyBtn.innerText = 'Copy';
+presentCopyBtn.style.position = 'absolute';
+presentCopyBtn.style.top = '5px';
+presentCopyBtn.style.right = '5px';
+
 presentContainer.appendChild(presentTextarea);
+presentContainer.appendChild(presentCopyBtn);
 
 const absentContainer = document.createElement('div');
 absentContainer.style.display = 'none';
+absentContainer.style.position = 'relative';
 absentContainer.style.margin = '20px 0';
-absentContainer.style.textAlign = 'center';
-
-const absentLabel = document.createElement('div');
-absentLabel.innerText = 'Absent Students';
-absentLabel.style.fontWeight = 'bold';
-absentLabel.style.marginBottom = '5px';
-absentLabel.style.fontSize = '18px';
 
 const absentTextarea = document.createElement('textarea');
 absentTextarea.readOnly = true;
-absentTextarea.style.width = '320px';
+absentTextarea.style.width = '300px';
 absentTextarea.style.height = '60px';
 absentTextarea.style.fontSize = '16px';
 absentTextarea.style.resize = 'none';
-absentTextarea.style.borderRadius = '8px';
-absentTextarea.style.border = '1px solid #f44336';
-absentTextarea.style.background = '#fff6f6';
-absentTextarea.style.padding = '8px';
 
-absentContainer.appendChild(absentLabel);
+const absentCopyBtn = document.createElement('button');
+absentCopyBtn.innerText = 'Copy';
+absentCopyBtn.style.position = 'absolute';
+absentCopyBtn.style.top = '5px';
+absentCopyBtn.style.right = '5px';
+
 absentContainer.appendChild(absentTextarea);
+absentContainer.appendChild(absentCopyBtn);
 
 // Insert after the rollDisplay element
 rollDisplay.parentNode.insertBefore(presentContainer, rollDisplay.nextSibling);
 rollDisplay.parentNode.insertBefore(absentContainer, presentContainer.nextSibling);
 
-// ...existing code...
+// Copy button logic
+presentCopyBtn.onclick = function() {
+    presentTextarea.select();
+    document.execCommand('copy');
+};
+absentCopyBtn.onclick = function() {
+    absentTextarea.select();
+    document.execCommand('copy');
+};
 
+// Display the first roll number
 function updateDisplay() {
     if (currentIndex < rollNumbers.length) {
         rollDisplay.innerText = `Current : ${rollNumbers[currentIndex]}\nPresent: ${presentList.length}\nAbsent: ${absentList.length}`;
@@ -132,4 +131,20 @@ function updateDisplay() {
 }
 updateDisplay();
 
-// ...existing
+// When Present is clicked
+presentBtn.onclick = function() {
+    if (currentIndex < rollNumbers.length) {
+        presentList.push(rollNumbers[currentIndex]);
+        currentIndex++;
+        updateDisplay();
+    }
+};
+
+// When Absent is clicked
+absentBtn.onclick = function() {
+    if (currentIndex < rollNumbers.length) {
+        absentList.push(rollNumbers[currentIndex]);
+        currentIndex++;
+        updateDisplay();
+    }
+};
